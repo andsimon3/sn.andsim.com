@@ -29,6 +29,7 @@ if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 			$sqlresponse = "SELECT COUNT(*) FROM auth WHERE email='".$email."'";
 			$result = $mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
 			$result = mysqli_fetch_row($result);
+			$mysqli->store_result();
 			if(!$result[0]){
 				while($tokennexist){
 					$usertoken = bin2hex(random_bytes(32));
@@ -37,13 +38,13 @@ if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 					$row = mysqli_fetch_row($result);
 					if($row[0]==0){$tokennexist=false;};
 				}
-
-				#$sqlresponse = "INSERT INTO auth(email, pass, user_token, regdate, device_list) 
-				#VALUES('".$email."', '".$passwordhash."', '".$usertoken.", '".date('Y-m-d H:i:s')."', '".date('Y-m-d H:i:s')."')";
-				#change profile & profile_privacy & profile_data & DEVICE_LIST
-				$result = $mysqli->query($sqlresponse);
-				#$sqlresponse = "INSERT INTO auth(id, first_name, last_name, regdate) VALUES('".$mysqli->insert_id"', '".$passwordhash."', '".$usertoken.", '".date('Y-m-d H:i:s')."')";
-				#$result = $mysqli->query($sqlresponse);
+				$device = $_SERVER['HTTP_USER_AGENT'].' '.$ip;
+				$sqlresponse = "INSERT INTO auth(email, pass, user_token, regdate, device_list) 
+				VALUES('".$email."', '".$passwordhash."', '".$usertoken."', '".date("Y-m-d H:i:s")."', '".$device."')";
+				$mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
+				echo $mysqli->error;
+				$sqlresponse = "INSERT INTO account_profiles(id) VALUES('".$mysqli->insert_id."')";
+				$mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
 				#Confirm mail
 					$to      = $email;
 					$subject = 'the subject';
@@ -125,24 +126,6 @@ if(file_exists($lang)){
 		<div id='RegDiv' class='loginBlock'>
 			<?php echo $lang[1]; ?><hr>
 			<form method="POST" action="login.php">
-
-				<div  class='twoInputDiv'>
-					<label><b><?php echo $lang[5]; ?>:</b></br/>
-						<input class='twoInput' type="text" name="f_name" 
-							placeholder="<?php echo $lang[5]; ?>" 
-						/></label>
-				</div>
-				<div  class='twoInputDiv'>
-					<label><b><?php echo $lang[6]; ?>:</b></br/>
-						<input class='twoInput' type="text" name="l_name" 
-							placeholder="<?php echo $lang[6]; ?>" 
-						 /></label>
-				</div>
-
-				<label><b><?php echo $lang[7]; ?>:</b>
-					<input type="date" name="birth_date"  
-							placeholder="<?php echo $lang[7]; ?>" 
-						/></label>
 				<label><b><?php echo $lang[8]; ?>:</b>
 					<input type="text" name="email"  
 							placeholder="<?php echo $lang[8]; ?>" 
