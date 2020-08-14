@@ -1,0 +1,14 @@
+Login in
+Registration
+Android App
+IOS App
+Login in with ...
+First Name
+Second Name
+Date of birth
+e-mail
+Password
+Password again
+Continue
+*TEXT ABOUT SITE*
+Authtorization
