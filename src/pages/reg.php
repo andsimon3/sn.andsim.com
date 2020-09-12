@@ -74,11 +74,14 @@ if(file_exists($lang)){
 <head>
 	<meta charset="utf-8" />
 	<title><?php echo $lang[13]; ?></title>
-	<link rel="stylesheet" href='/src/styles/login.css' type='text/css' />
+	<link rel="stylesheet" href='/src/styles/reg.css' type='text/css' />
 </head>
 <body>
+	<!-- Список официальных клиентов
 	<button><?php echo $lang[2]; ?></button>
 	<button><?php echo $lang[3]; ?></button>
+	Вернуть поле входа?
+-->
 	<div id='LoginInBlock'>
 		<div id='RegDiv' class='loginBlock'>
 			<?php echo $lang[1]; ?><hr>
@@ -86,7 +89,8 @@ if(file_exists($lang)){
 				<label><b><?php echo $lang[8]; ?>:</b>
 					<input type="text" name="email"  
 							placeholder="<?php echo $lang[8]; ?>" 
-						/></label>
+						/>
+				</label>
 
 				<div  class='twoInputDiv'>
 					<label><b><?php echo $lang[9]; ?>:</b>
@@ -104,7 +108,7 @@ if(file_exists($lang)){
 
 				<button class='FormButton' name="submit" value='reg'><?php echo $lang[11]; ?></button>
 			</form>
-			<!--
+			<!-- Скорее всего перенести в login и добавить Соглашения
 			<label><b><?php echo $lang[4]; ?></b>
 			<div id='RegWith'><br />//Кнопки соцсетей</div></label>-->
 		</div>
