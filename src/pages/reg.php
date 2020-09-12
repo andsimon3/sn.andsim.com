@@ -21,9 +21,6 @@ if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 	if ($mysqli->connect_error) {
     	die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 	}else{
-
-
-		if($_POST['submit']=='reg'){
 			#Registration
 			$tokennexist = true;
 			$sqlresponse = "SELECT COUNT(*) FROM auth WHERE email='".$email."'";
@@ -55,30 +52,6 @@ if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 			}else{
 				echo "EMAIL ALREADY REGISTERED";
 				#TODO:Email already registered
-			}
-
-
-
-		}elseif($_POST['submit']=='login'){
-			#Login
-			$sqlresponse = "SELECT * FROM auth WHERE email='".$email."'";
-			$result = $mysqli->query($sqlresponse, MYSQLI_USE_RESULT);#MYSQL_STORE_RESULT?
-			$result = mysqli_fetch_assoc($result);
-			if( password_verify($password, $result['pass'])){
-				if($result['confirm']){
-					#TODO:2factor auth 
-					setcookie('access_token', $result['user_token'], time()+60*60*24*365*10);
-					setcookie('user_id', $result['id'], time()+60*60*24*365*10);
-					header('Location: /src/pages/profile.php');
-
-				}else{
-					echo 'E-mail not confirmed';
-				}
-			}else{
-				echo 'Email or password is wrong';
-			}
-			#TODO:Redirect to previous page 
-			
 		}
 	}
 }
@@ -107,23 +80,6 @@ if(file_exists($lang)){
 	<button><?php echo $lang[2]; ?></button>
 	<button><?php echo $lang[3]; ?></button>
 	<div id='LoginInBlock'>
-		<div id='LoginDiv' class='loginBlock'>
-			<?php echo $lang[0]; ?><hr>
-
-			<form method="POST" action="login.php">
-				<label><b><?php echo $lang[8]; ?></b>
-				<input type="text" name="email" 
-							placeholder="<?php echo $lang[8]; ?>" 
-						 /></label>
-
-				<label><b><?php echo $lang[9]; ?></b>
-				<input type="password" name="pass"
-							placeholder="<?php echo $lang[9]; ?>" 
-						/></label>
-
-				<button class='FormButton' name="submit" value='login' ><?php echo $lang[11]; ?></button>
-			</form>
-		</div>
 		<div id='RegDiv' class='loginBlock'>
 			<?php echo $lang[1]; ?><hr>
 			<form method="POST" action="login.php">
@@ -148,8 +104,9 @@ if(file_exists($lang)){
 
 				<button class='FormButton' name="submit" value='reg'><?php echo $lang[11]; ?></button>
 			</form>
+			<!--
 			<label><b><?php echo $lang[4]; ?></b>
-			<div id='RegWith'><br />//Кнопки соцсетей</div></label>
+			<div id='RegWith'><br />//Кнопки соцсетей</div></label>-->
 		</div>
 	</div>
 </body>
