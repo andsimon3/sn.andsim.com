@@ -1,0 +1,14 @@
+#MainBlock{
+	display: none;
+	border-radius:		15px 0px 0px 15px;
+	width:				auto;
+	border:				solid #c9c7da 1px;
+	padding:			20px;
+	margin: 			auto;
+	position:			relative;
+	color:				#c9c7da;
+	border-radius:		5px;
+	width:				30rem;
+	z-index:			10;
+	height: 			auto;
+}

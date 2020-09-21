@@ -23,23 +23,6 @@ input:hover{
 label{
 	cursor: 			inherit;
 }
-.loginBlock{
-	border-radius:		15px 0px 0px 15px;
-	width:				auto;
-	border:				solid #c9c7da 1px;
-	margin:				10px;
-	padding:			20px;
-}
-#LoginInBlock{
-	margin: 			auto;
-	position:			relative;
-	color:				#c9c7da;
-	border-radius:		5px;
-	display:			block;
-	width:				30rem;
-	z-index:			10;
-	height: 			auto;
-}
 input{
 	background-color:	#ffffff;
 	height: 			1.7rem;
@@ -48,19 +31,6 @@ input{
 	border-radius:		5px;
 	margin-bottom:		10px;
 }
-.FormButton{
-	width: 				100%;
-	border-radius:		5px 15px 15px 5px;
-}
-.twoInput{
-	display: 			inline;
-	width: 				100%;
-}
-.twoInputDiv{
-	display: 			inline-block;
-	width: 				49%;
-}
-#RegWith{
-	padding:			5px;
-	color: 				#c9c7da;
+input[type=file]{
+	
 }

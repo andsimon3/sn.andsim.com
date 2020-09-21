@@ -2,7 +2,7 @@
 header("Cache-Control: no-store");
 #TODO:CSRF Def
 session_start();
-include('settings.php');
+include('../scripts/settings.php');
 #Redirect if cookies exist
 #Переделать под подготовленные запросы SQL!!!!!!!!!!!!!!!!
 if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
@@ -21,28 +21,55 @@ if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 	if ($mysqli->connect_error) {
     	die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
 	}else{
+
 			#Registration
 			$tokennexist = true;
-			$sqlresponse = "SELECT COUNT(*) FROM auth WHERE email='".$email."'";
-			$result = $mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
-			$result = mysqli_fetch_row($result);
-			$mysqli->free();
-			if(!$result[0]){
+			if(
+				// подготовливаем запрос, там куда будут вствлятся данные отмечаем символом ? (плейсхолдоры)
+				($stmt->prepare("SELECT COUNT(*) FROM account WHERE email=?") ===FALSE)
+				// привязываем переменные к плейсхолдорам
+				or ($stmt->bind_param('s', $email) === FALSE)
+				// отрправляем даные, которые на данный момент находятся в привязанных переменных
+				or ($stmt->execute() === FALSE)
+				or (($result = $stmt->get_result()) === FALSE)
+				or ($stmt->close() === FALSE)
+			) {
+				die('Select Error (' . $stmt->errno . ') ' . $stmt->error);
+			}
+			$result = $result->fetch_row();
+			if($result[0] == 0){
 				while($tokennexist){
 					$usertoken = bin2hex(random_bytes(32));
-					$sqlresponse = "SELECT COUNT(*) FROM auth WHERE user_token='$usertoken'";
-					$result = $mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
-					$row = mysqli_fetch_row($result);
-					$mysqli->store_result();
-					if($row[0]==0){$tokennexist=false;};
+					$stmt = $mysqli->stmt_init();
+					if(
+						// подготовливаем запрос, там куда будут вствлятся данные отмечаем символом ? (плейсхолдоры)
+						($stmt->prepare("SELECT COUNT(*) FROM account WHERE user_token=?") ===FALSE)
+						// привязываем переменные к плейсхолдорам
+						or ($stmt->bind_param('s', $usertoken) === FALSE)
+						// отрправляем даные, которые на данный момент находятся в привязанных переменных
+						or ($stmt->execute() === FALSE)
+						or (($result = $stmt->get_result()) === FALSE)
+						or ($stmt->close() === FALSE)
+					) {
+						die('Select Error (' . $stmt->errno . ') ' . $stmt->error);
+					}
+					$result = $result->fetch_row();
+					if($result[0]==0){$tokennexist=false;};
 				}
 				$device = $_SERVER['HTTP_USER_AGENT'].' '.$ip;
-				$sqlresponse = "INSERT INTO auth(email, pass, user_token, regdate, device_list) 
-				VALUES('".$email."', '".$passwordhash."', '".$usertoken."', '".date("Y-m-d H:i:s")."', '".$device."')";
-				$mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
-				echo $mysqli->error;
-				$sqlresponse = "INSERT INTO account_profiles(id) VALUES('".$mysqli->insert_id."')";
-				$mysqli->query($sqlresponse, MYSQLI_USE_RESULT);
+				$stmt = $mysqli->stmt_init();
+					if(
+						// подготовливаем запрос, там куда будут вствлятся данные отмечаем символом ? (плейсхолдоры)
+						($stmt->prepare("INSERT INTO account(email, pass, user_token, regdate, devices) 
+				VALUES(?,?,?,?,?)") ===FALSE)
+						// привязываем переменные к плейсхолдорам
+						or ($stmt->bind_param('sssss', $email, $passwordhash, $usertoken, date("Y-m-d H:i:s"), $device) === FALSE)
+						// отрправляем даные, которые на данный момент находятся в привязанных переменных
+						or ($stmt->execute() === FALSE)
+						or ($stmt->close() === FALSE)
+					) {
+						die('Select Error (' . $stmt->errno . ') ' . $stmt->error);
+					}
 				#Confirm mail
 					$to      = $email;
 					$subject = 'the subject';
@@ -55,10 +82,6 @@ if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 		}
 	}
 }
-#root
-#MuJ3HE7uki8Exa7uPobEK7tE7A7E5E
-#mysql
-#x62aJ5HoWO63JICAD71Oxuk88E6aM7
 $userlang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2);
 $lang = '../../src/lang/login/'.$userlang.'.txt';
 if(file_exists($lang)){
@@ -85,7 +108,7 @@ if(file_exists($lang)){
 	<div id='LoginInBlock'>
 		<div id='RegDiv' class='loginBlock'>
 			<?php echo $lang[1]; ?><hr>
-			<form method="POST" action="login.php">
+			<form method="POST" action="reg.php">
 				<label><b><?php echo $lang[8]; ?>:</b>
 					<input type="text" name="email"  
 							placeholder="<?php echo $lang[8]; ?>" 

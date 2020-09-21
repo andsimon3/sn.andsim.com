@@ -1,28 +1,3 @@
-body{
-	background-color:	#0f0f2d;
-	color: 				#c9c7da;
-	min-width:			500px;
-	min-height:			500px;
-	cursor: 			url(/src/img/cursor.png) 8 8, default;
-	margin: 			0;
-}
-button{
-	border:				solid #5858a7 3px;
-	background-color:	#ffffff;
-	color:				#0f0f2d;
-	padding:			5px;
-}
-button:hover{
-	cursor: 			inherit;
-	background-color:	#AAA;
-}
-input:hover{
-	cursor: 			inherit;
-	background-color:	#AAA;
-}
-label{
-	cursor: 			inherit;
-}
 .loginBlock{
 	border-radius:		15px 0px 0px 15px;
 	width:				auto;
@@ -36,17 +11,9 @@ label{
 	color:				#c9c7da;
 	border-radius:		5px;
 	display:			block;
-	width:				30%;
+	width:				30rem;
 	z-index:			10;
 	height: 			auto;
-}
-input{
-	background-color:	#ffffff;
-	height: 			1.7rem;
-	color:				#0f0f2d;
-	width:				100%;
-	border-radius:		5px;
-	margin-bottom:		10px;
 }
 .FormButton{
 	width: 				100%;
