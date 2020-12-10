@@ -1,7 +1,5 @@
 #MainBlock{
-	display: none;
 	border-radius:		15px 0px 0px 15px;
-	width:				auto;
 	border:				solid #c9c7da 1px;
 	padding:			20px;
 	margin: 			auto;
@@ -11,4 +9,29 @@
 	width:				30rem;
 	z-index:			10;
 	height: 			auto;
+}
+#LogoInput{
+	height: 5rem;
+	width: 5rem;
+}
+#LogoDiv{
+	position: relative;
+	bottom: 3.5rem;
+	height: 6rem;
+	width: 5rem;
+	display: inline-block;
+}
+#IDDiv{
+	width: 24.5rem;
+	display: inline-block;
+}
+#MainTextDiv{
+	height: 6rem;
+	width: 24rem;
+	display: inline-block;
+}
+#MainDiv{
+	height: 6rem;
+	width: 30rem;
+
 }

@@ -1,12 +1,50 @@
 <?php
-header("Cache-Control: no-store");
 #TODO:CSRF Def!!!!!
-session_start();
+session_start();/*
 include('../scripts/settings.php');
-if(include '../scripts/auth.php'){
-header('Location: https://tittle.vercel.app');
+if( (include('../scripts/auth.php')) != 0){
+//header('Location: https://tittle.vercel.app');
 }else{
 #Redirect if cookies exist
+*
+ * 
+ */
+class LoginIn
+{
+	private function checkPassword($pass)
+	{
+		return password_verify($pass, $result[2]);
+	} 
+
+	private function DataAccess($email)
+	{
+		include('../scripts/settings.php');
+		$stmt = $mysqli->stmt_init();
+		if(
+			// подготовливаем запрос, там куда будут вствлятся данные отмечаем символом ? (плейсхолдоры)
+			($stmt->prepare("SELECT confirm, devices, pass, user_token, id FROM account WHERE email = ?") === FALSE)
+			// привязываем переменные к плейсхолдорам
+			or ($stmt->bind_param('s', $email) === FALSE)
+			// отрправляем даные, которые на данный момент находятся в привязанных переменных
+			or ($stmt->execute() === FALSE)
+			or (($result = $stmt->get_result()->fetch_row()) === FALSE)
+			or ($stmt->close() === FALSE)
+		) {
+			echo('Connect Error');
+		}
+	} 
+	function __construct($email, $pass)
+	{
+		$this->DataAccess($email);
+		if($this->checkPassword($pass)){
+			echo 123;
+		}
+	}
+}
+
+$login = new LoginIn($_POST['email'],$_POST['pass']);
+
+/*
 if($_POST['email']!=null&$_POST['pass']!=null){
 	$email = $_POST['email'];
 	$password = $_POST['pass'];
@@ -25,7 +63,6 @@ if($_POST['email']!=null&$_POST['pass']!=null){
     	echo('Connect Error');
 	}else{
 		#Login
-		$stmt = $mysqli->stmt_init();
 		if(
 			// подготовливаем запрос, там куда будут вствлятся данные отмечаем символом ? (плейсхолдоры)
 			($stmt->prepare("SELECT confirm, devices, pass, user_token, id FROM account WHERE email = ?") === FALSE)
@@ -45,7 +82,7 @@ if($_POST['email']!=null&$_POST['pass']!=null){
 				setcookie('access_token', $result['user_token'], time()+60*60*24*365*10);
 				setcookie('user_id', $result['id'], time()+60*60*24*365*10);
 				header('Location: /src/pages/profile.php');
-		*/
+		*//*
 		if(password_verify($password, $result[2])){
 			if($result[0]){
 				setcookie('access_token', $result[3], time()+60*60*24*365*10);
@@ -56,7 +93,7 @@ if($_POST['email']!=null&$_POST['pass']!=null){
 	}
 		
 	}
-}
+}*/
 $userlang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2);
 $lang = '../../src/lang/login/'.$userlang.'.txt';
 if(file_exists($lang)){
@@ -64,7 +101,7 @@ if(file_exists($lang)){
 }else{
 	$lang = file('../../src/lang/login/en.txt');
 }
-}
+
 #Перевод страниц(массив слов-язык и echo элементов массива ) UPD App
 #echo <head> UPD App
 #ИКОНКИ САЙТА

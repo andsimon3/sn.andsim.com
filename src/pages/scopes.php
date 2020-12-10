@@ -1,5 +1,11 @@
 <?php
 //CSRF!!!!!!!!
+include "../scripts/settings.php";
+if(include '../scripts/auth.php' == 0){
+	header('Location: http://api.tittle.com/src/pages/login.php');
+}else{
+
+}
 ?>
 <!DOCTYPE html>
 <html>

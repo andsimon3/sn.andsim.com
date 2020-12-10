@@ -13,9 +13,9 @@
 		or (empty($_COOKIE['access_token']))
 		or ($_COOKIE['access_token']!=$result[1])//device check
 	) {
-		$is_auth = false;
+		$auth = $_COOKIE['user_id'];
 	}else{
-		$is_auth = true;
+		$auth = 0;
 	}
-	return $is_auth;
+	return $auth;
 ?>

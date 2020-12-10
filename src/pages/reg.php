@@ -5,6 +5,9 @@ session_start();
 include('../scripts/settings.php');
 #Redirect if cookies exist
 #Переделать под подготовленные запросы SQL!!!!!!!!!!!!!!!!
+if(include '../scripts/auth.php' != 0){
+header('Location: https://tittle.vercel.app');
+}else{
 if($_POST['email']!=null&$_POST['pass']!=null&$_POST['submit']!=null){
 	$email = $_POST['email'];
 	
@@ -88,6 +91,7 @@ if(file_exists($lang)){
 	$lang = file($lang);
 }else{
 	$lang = file('../../src/lang/login/en.txt');
+}
 }
 #Перевод страниц(массив слов-язык и echo элементов массива )
 #echo <head>
